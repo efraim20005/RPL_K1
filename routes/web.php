@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-
+Use App\Http\Controllers\KategoriController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +25,14 @@ Route::middleware('auth:user')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard.index');
         Route::get('/profile', [DashboardController::class, 'profile'])->name('profile.index');
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+
+        Route::get( '/kategori', [KategoriController::class, 'index'])->name(name: 'kategori.index');
+        Route::get('/kategori/tambah', [KategoriController::class, 'tambah'])->name(name: 'kategori.tambah');
+        Route::post( '/kategori/prosesTambah', [KategoriController::class, 'prosesTambah'])->name(name: 'kategori.prosesTambah');
+        Route::get('/kategori/ubah/{id}',[KategoriController::class, 'ubah'])->name(name: 'kategori.ubah');
+        Route::post('/kategori/prosesUbah', [KategoriController::class, 'prosesUbah'])->name(name: 'kategori.prosesUbah');
+        Route::get('/kategori/hapus{id}', [KategoriController::class, 'hapus'])->name(name: 'kategori.hapus');
 
     });
 
