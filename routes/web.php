@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 Use App\Http\Controllers\KategoriController;
+use \App\Http\Controllers\BeritaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,10 +35,38 @@ Route::middleware('auth:user')->group(function () {
         Route::post('/kategori/prosesUbah', [KategoriController::class, 'prosesUbah'])->name(name: 'kategori.prosesUbah');
         Route::get('/kategori/hapus{id}', [KategoriController::class, 'hapus'])->name(name: 'kategori.hapus');
 
+
+
+        Route::get( '/berita', [BeritaController::class, 'index'])->name(name: 'berita.index');
+        Route::get('/berita/tambah', [BeritaController::class, 'tambah'])->name(name: 'berita.tambah');
+        Route::post( '/berita/prosesTambah', [BeritaController::class, 'prosesTambah'])->name(name: 'berita.prosesTambah');
+        Route::get('/berita/ubah/{id}',[BeritaController::class, 'ubah'])->name(name: 'berita.ubah');
+        Route::post('/berita/prosesUbah', [BeritaController::class, 'prosesUbah'])->name(name: 'berita.prosesUbah');
+        Route::get('/berita/hapus{id}', [BeritaController::class, 'hapus'])->name(name: 'berita.hapus');
+
+
+
     });
+
+
 
 });
 
+Route::get('files/{filename}', function ($filename) {
+    $path = storage_path('app/public/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+})->name('storage');
 
 
 
